@@ -13,5 +13,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
 	List<User> findAllByDeletedFalse();
 
+	Optional<User> findByIdAndDeletedFalse(Integer id);
+
 	// List<User> findByUsername(@Param("username") String name);
 }

@@ -12,9 +12,21 @@ public class UserController {
 
 	private final UserService userService;
 
+//	@PostMapping("/register")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public User postUser(@RequestBody NewUserDto user) {
+//		return userService.createUser(user);
+//	}
+
 	@GetMapping("/api/users")
 	@ResponseStatus(HttpStatus.OK)
 	public List<User> getAllUsers() {
 		return userService.getAllUsers();
+	}
+
+	@GetMapping("/api/users/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public User getUserById(@PathVariable Integer id) {
+		return userService.getUserById(id);
 	}
 }
