@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.revature.backend.comments.Comment;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.Data;
 
@@ -36,6 +33,7 @@ public class Post {
 	private LocalDateTime updatedAt;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@OneToMany
 	private List<Comment> commentList;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
