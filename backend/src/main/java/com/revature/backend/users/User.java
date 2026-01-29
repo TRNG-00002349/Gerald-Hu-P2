@@ -3,15 +3,15 @@ package com.revature.backend.users;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.revature.backend.posts.Post;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -47,9 +47,18 @@ public class User {
 	private LocalDateTime updatedAt;
 
 	@JsonIgnore
-	@Column(name = "deleted")
+	@Column(name = "deleted", nullable = false)
 	private Boolean deleted;
 
-//	@JsonInclude(JsonInclude.Include.NON_NULL)
-//	private List<Post> userPosts;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@OneToMany(mappedBy = "id")
+	private List<Post> userPosts;
+
+//	public User(NewUserDto newUserDto) {
+//		this.username = newUserDto.getUsername();
+//		this.hashedPassword = newUserDto.getPassword();
+//		this.email = newUserDto.getEmail();
+//
+//		this.createdAt = LocalDateTime.now();
+//	}
 }

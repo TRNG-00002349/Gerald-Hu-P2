@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.revature.backend.comments.Comment;
 
+import com.revature.backend.likes.Like;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class Post {
 	private List<Comment> commentList;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private List<Integer> likesList;
+	@OneToMany(mappedBy = "postId")
+	private List<Like> likesList;
 
 }
