@@ -9,8 +9,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Entity
 @Data
+@Entity
 @Valid
 @Table(name = "likes", schema = "public")
 public class Like {

@@ -14,8 +14,8 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Data
+@Entity
 @Valid
 @Table(name = "comments", schema = "public")
 public class Comment {

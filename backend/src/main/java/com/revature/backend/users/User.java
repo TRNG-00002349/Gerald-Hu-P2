@@ -7,16 +7,16 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Data
 @Entity
-@Getter
-@Setter
-@Table(name = "users", schema = "public")
 @Valid
+@Table(name = "users", schema = "public")
 public class User {
 
 	@Id
