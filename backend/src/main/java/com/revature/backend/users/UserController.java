@@ -22,12 +22,12 @@ public class UserController {
 	@GetMapping("/api/users")
 	@ResponseStatus(HttpStatus.OK)
 	public List<User> getAllUsers() {
-		return userService.getAllUsers();
+		return userService.readAllUsers();
 	}
 
 	@GetMapping("/api/users/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public User getUserById(@PathVariable Integer id) {
-		return userService.getUserById(id);
+		return userService.readUserById(id);
 	}
 }

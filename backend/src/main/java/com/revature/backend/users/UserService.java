@@ -28,11 +28,11 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public List<User> getAllUsers() {
+	public List<User> readAllUsers() {
 		return userRepository.findAllByDeletedFalse();
 	}
 
-	public User getUserById(Integer id) {
+	public User readUserById(Integer id) {
 		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
 		if (result.isPresent()) {
 			return result.get();
