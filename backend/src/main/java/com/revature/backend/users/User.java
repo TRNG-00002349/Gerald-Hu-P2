@@ -53,12 +53,4 @@ public class User {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@OneToMany(mappedBy = "id")
 	private List<Post> userPosts;
-
-//	public User(NewUserDto newUserDto) {
-//		this.username = newUserDto.getUsername();
-//		this.hashedPassword = newUserDto.getPassword();
-//		this.email = newUserDto.getEmail();
-//
-//		this.createdAt = LocalDateTime.now();
-//	}
 }

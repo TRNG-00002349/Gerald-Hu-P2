@@ -15,13 +15,18 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
-//	public User createUser(NewUserDto newUserDto) {
-//
-//		// TODO: hash password before passing on
-//		User user = new User(newUserDto);
-//
-//		return userRepository.save(user);
-//	}
+	public User createUser(NewUserDto newUserDto) {
+
+		// TODO: hash password before passing on
+		User user = new User();
+		user.setUsername(newUserDto.getUsername());
+		user.setEmail(newUserDto.getEmail());
+		user.setHashedPassword(newUserDto.getPassword());
+		user.setCreatedAt(LocalDateTime.now());
+		user.setDeleted(false);
+
+		return userRepository.save(user);
+	}
 
 	public List<User> getAllUsers() {
 		return userRepository.findAllByDeletedFalse();

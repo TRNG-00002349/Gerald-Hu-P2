@@ -1,5 +1,6 @@
 package com.revature.backend.users;
 
+import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +13,11 @@ public class UserController {
 
 	private final UserService userService;
 
-//	@PostMapping("/register")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public User postUser(@RequestBody NewUserDto user) {
-//		return userService.createUser(user);
-//	}
+	@PostMapping("/register")
+	@ResponseStatus(HttpStatus.CREATED)
+	public User postUser(@Valid @RequestBody NewUserDto user) {
+		return userService.createUser(user);
+	}
 
 	@GetMapping("/api/users")
 	@ResponseStatus(HttpStatus.OK)
