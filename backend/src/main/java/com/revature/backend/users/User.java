@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,7 +54,7 @@ public class User {
 	@OneToMany(mappedBy = "author")
 	private List<Post> userPosts;
 
-	@Autowired
+
 	public User(UserDto userDto) {
 		this.email = userDto.getEmail();
 		this.hashedPassword = userDto.getPassword();
