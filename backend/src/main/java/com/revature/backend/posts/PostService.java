@@ -18,7 +18,7 @@ public class PostService {
 	private final PostRepository postRepository;
 	private final UserRepository userRepository;
 
-	public Post createUserBlogPost(@Valid PostDto postDto) {
+	public Post createBlogPost(@Valid PostDto postDto) {
 		Integer authorId = postDto.getAuthorId();
 		Optional<User> author = userRepository.findByIdAndDeletedFalse(authorId);
 		if (author.isEmpty()) {
@@ -47,5 +47,21 @@ public class PostService {
 			throw new EntityNotFoundException("post", postId);
 		}
 		return post.get();
+	}
+
+	public Post updateBlogPost(Integer postId, @Valid PostDto postDto) {
+		Integer authorId = postDto.getAuthorId();
+		Optional<Post> post = postRepository.findById(postId);
+		Optional<User> author = userRepository.findByIdAndDeletedFalse(authorId);
+		if (post.isEmpty()) {
+			throw new EntityNotFoundException("post", postId);
+		} else if (author.isEmpty()) {
+			throw new EntityNotFoundException("user", authorId);
+		}
+
+		Post p = post.get();
+		p.setContent(postDto.getContent());
+		p.setUpdatedAt(LocalDateTime.now());
+		return postRepository.save(p);
 	}
 }

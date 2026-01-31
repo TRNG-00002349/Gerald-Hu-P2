@@ -16,7 +16,7 @@ public class PostController {
 	@PostMapping("/api/posts")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Post postBlogPost(@Valid @RequestBody PostDto postDto) {
-		return postService.createUserBlogPost(postDto);
+		return postService.createBlogPost(postDto);
 	}
 
 	@GetMapping("/api/posts/{postId}")
@@ -29,5 +29,10 @@ public class PostController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<Post> getUserBlogPosts(@PathVariable Integer userId) {
 		return postService.readUserBlogPosts(userId);
+	}
+
+	@PutMapping("/api/posts/{postId}")
+	public Post putBlogPost(@PathVariable Integer postId, @Valid @RequestBody PostDto postDto) {
+		return postService.updateBlogPost(postId, postDto);
 	}
 }
