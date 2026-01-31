@@ -19,6 +19,7 @@ public class PostService {
 	private final UserRepository userRepository;
 
 	public Post createBlogPost(@Valid PostDto postDto) {
+		// TODO: authorId shouldn't be part of the postDto, it should be obtained from user token/cookie.
 		Integer authorId = postDto.getAuthorId();
 		Optional<User> author = userRepository.findByIdAndDeletedFalse(authorId);
 		if (author.isEmpty()) {
@@ -50,14 +51,11 @@ public class PostService {
 	}
 
 	public Post updateBlogPost(Integer postId, @Valid PostDto postDto) {
-		Integer authorId = postDto.getAuthorId();
+		// TODO: AUTH: pull userId from token, etc
 		Optional<Post> post = postRepository.findById(postId);
-		Optional<User> author = userRepository.findByIdAndDeletedFalse(authorId);
 		if (post.isEmpty()) {
 			throw new EntityNotFoundException("post", postId);
-		} else if (author.isEmpty()) {
-			throw new EntityNotFoundException("user", authorId);
-		}
+		} // else if author not found, or author is the wrong author, throw an exception
 
 		Post p = post.get();
 		p.setContent(postDto.getContent());
