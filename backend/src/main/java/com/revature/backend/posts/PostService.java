@@ -2,12 +2,10 @@ package com.revature.backend.posts;
 
 import com.revature.backend.users.User;
 import com.revature.backend.users.UserRepository;
-import com.revature.backend.utils.UserNotFoundException;
+import com.revature.backend.utils.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,7 +22,7 @@ public class PostService {
 		Integer authorId = postDto.getAuthorId();
 		Optional<User> author = userRepository.findByIdAndDeletedFalse(authorId);
 		if (author.isEmpty()) {
-			throw new UserNotFoundException(authorId);
+			throw new EntityNotFoundException("user", authorId);
 		}
 
 		Post post = new Post();
@@ -38,8 +36,16 @@ public class PostService {
 	public List<Post> readUserBlogPosts(Integer userId) {
 		Optional<User> author = userRepository.findByIdAndDeletedFalse(userId);
 		if (author.isEmpty()) {
-			throw new UserNotFoundException(userId);
+			throw new EntityNotFoundException("user", userId);
 		}
 		return postRepository.findByAuthorId(userId);
+	}
+
+	public Post readBlogPostById(Integer postId) {
+		Optional<Post> post = postRepository.findById(postId);
+		if (post.isEmpty()) {
+			throw new EntityNotFoundException("post", postId);
+		}
+		return post.get();
 	}
 }

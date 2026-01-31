@@ -19,6 +19,12 @@ public class PostController {
 		return postService.createUserBlogPost(postDto);
 	}
 
+	@GetMapping("/api/posts/{postId}")
+	@ResponseStatus(HttpStatus.OK)
+	public Post getBlogPostById(@PathVariable Integer postId) {
+		return postService.readBlogPostById(postId);
+	}
+
 	@GetMapping("/api/users/{userId}/posts")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Post> getUserBlogPosts(@PathVariable Integer userId) {

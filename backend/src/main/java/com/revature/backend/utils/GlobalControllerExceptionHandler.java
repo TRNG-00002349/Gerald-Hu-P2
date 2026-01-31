@@ -53,8 +53,8 @@ class GlobalControllerExceptionHandler {
 	}
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler(UserNotFoundException.class)
-	@ResponseBody ErrorInfo handleNotFoundException(HttpServletRequest req, Exception e) {
+	@ExceptionHandler(EntityNotFoundException.class)
+	@ResponseBody ErrorInfo handleEntityNotFoundException(HttpServletRequest req, Exception e) {
 		return new ErrorInfo(req.getRequestURL(), e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 }
