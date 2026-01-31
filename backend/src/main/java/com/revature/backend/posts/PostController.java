@@ -32,7 +32,14 @@ public class PostController {
 	}
 
 	@PutMapping("/api/posts/{postId}")
+	@ResponseStatus(HttpStatus.OK)
 	public Post putBlogPost(@PathVariable Integer postId, @Valid @RequestBody PostDto postDto) {
 		return postService.updateBlogPost(postId, postDto);
+	}
+
+	@DeleteMapping("/api/posts/{postId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteBlogPost(@PathVariable Integer postId) {
+		postService.deleteBlogPost(postId);
 	}
 }

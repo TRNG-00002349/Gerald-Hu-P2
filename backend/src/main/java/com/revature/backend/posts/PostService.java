@@ -62,4 +62,14 @@ public class PostService {
 		p.setUpdatedAt(LocalDateTime.now());
 		return postRepository.save(p);
 	}
+
+	public void deleteBlogPost(Integer postId) {
+		// TODO: auth, make sure user is [author of post] OR [admin role]
+		Optional<Post> post = postRepository.findById(postId);
+		if (post.isEmpty()) {
+			throw new EntityNotFoundException("post", postId);
+		}
+
+		postRepository.deleteById(postId);
+	}
 }
