@@ -18,8 +18,14 @@ public class UserService {
 	public User createUser(UserDto userDto) {
 		// TODO: hash password before passing on
 		User user = new User(userDto);
+		user.setDeleted(false);
 		user.setCreatedAt(LocalDateTime.now());
-		return userRepository.save(user);
+		try {
+			return userRepository.save(user);
+		} catch (Exception e) {
+			// Polish: when failing to make user bc of unique constraints, inform the client
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	public List<User> readAllUsers() {

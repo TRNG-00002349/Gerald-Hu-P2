@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.revature.backend.posts.Post;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -17,7 +16,6 @@ import java.util.List;
 
 @Data
 @Entity
-@Valid
 @Table(name = "users", schema = "public")
 @NoArgsConstructor
 public class User {
@@ -27,12 +25,12 @@ public class User {
 	private Integer id;
 
 	@Size(min = 4, message="username should be 4 characters or longer")
-	@Column(name = "username", nullable = false)
+	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 
 	@JsonIgnore
 	@Email
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
 	@JsonIgnore
@@ -51,13 +49,14 @@ public class User {
 
 	@JsonIgnore
 	@Column(name = "deleted", nullable = false)
-	private Boolean deleted;
+	private Boolean deleted = false;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@OneToMany(mappedBy = "id")
 	private List<Post> userPosts;
 
-	public User(@Autowired UserDto userDto) {
+	@Autowired
+	public User(UserDto userDto) {
 		this.email = userDto.getEmail();
 		this.hashedPassword = userDto.getPassword();
 		this.username = userDto.getUsername();

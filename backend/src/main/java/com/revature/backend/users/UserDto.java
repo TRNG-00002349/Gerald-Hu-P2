@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-@Valid
 public class UserDto {
 
 	@Size(min = 4, message="username should be 4 characters or longer")
