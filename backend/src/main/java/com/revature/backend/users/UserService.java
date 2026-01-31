@@ -39,13 +39,24 @@ public class UserService {
 		}
 		return result.get();
 	}
-//
-//	public User updateUserById(Integer id, UserDto userDto) {
-//		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
-//		if (result.isEmpty()) {
-//			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//		}
-//
-//		return userRepository.save()
-//	}
+
+	public User updateUserById(Integer id, UserDto userDto) {
+		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
+		if (result.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		User user = result.get();
+		// Polish: there has to be a better way to do this...
+		if (userDto.getEmail() != null && !userDto.getEmail().isBlank()) {
+			user.setEmail(userDto.getEmail());
+		}
+		if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
+			user.setHashedPassword(userDto.getPassword()); // TODO: hash
+		}
+		if (userDto.getUsername() != null && !userDto.getUsername().isBlank()) {
+			user.setUsername(userDto.getUsername());
+		}
+		user.setUpdatedAt(LocalDateTime.now());
+		return userRepository.save(user);
+	}
 }

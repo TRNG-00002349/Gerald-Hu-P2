@@ -10,13 +10,10 @@ import lombok.Data;
 public class UserDto {
 
 	@Size(min = 4, message="username should be 4 characters or longer")
-	@NotNull
 	private String username;
 
 	@Email
-	@NotNull
 	private String email;
 
-	@NotNull
 	private String password;
 }

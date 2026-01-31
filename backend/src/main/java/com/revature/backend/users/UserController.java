@@ -30,10 +30,10 @@ public class UserController {
 	public User getUserById(@PathVariable Integer id) {
 		return userService.readUserById(id);
 	}
-//
-//	@PutMapping("/api/users/{id}")
-//	@ResponseStatus(HttpStatus.OK)
-//	public User putUserById(@PathVariable Integer id, @Valid @RequestBody UserDto user) {
-//		return userService.updateUserById(id, user);
-//	}
+
+	@PutMapping("/api/users/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public User putUserById(@PathVariable Integer id, @Valid @RequestBody UserDto user) {
+		return userService.updateUserById(id, user);
+	}
 }
