@@ -26,6 +26,6 @@ class GlobalControllerExceptionHandler {
 		} else {
 			message = "bad request";
 		}
-		return new ErrorInfo(req.getRequestURL(), message);
+		return new ErrorInfo(req.getRequestURL(), message, HttpStatus.BAD_REQUEST);
 	}
 }
