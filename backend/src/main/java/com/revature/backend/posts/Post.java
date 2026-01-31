@@ -50,6 +50,7 @@ public class Post {
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@OneToMany(mappedBy = "post")
+	@JsonManagedReference
 	private List<Like> likesList;
 
 }
