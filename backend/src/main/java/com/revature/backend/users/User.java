@@ -52,7 +52,7 @@ public class User {
 	private Boolean deleted = false;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	@OneToMany(mappedBy = "id")
+	@OneToMany(mappedBy = "author")
 	private List<Post> userPosts;
 
 	@Autowired

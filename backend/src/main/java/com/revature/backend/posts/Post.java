@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.revature.backend.comments.Comment;
 
 import com.revature.backend.likes.Like;
+import com.revature.backend.users.User;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,7 +14,6 @@ import java.util.List;
 
 @Data
 @Entity
-@Valid
 @Table(name = "posts", schema = "public")
 public class Post {
 
@@ -24,7 +23,9 @@ public class Post {
 	private String content;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private Integer authorId;
+	@ManyToOne
+	@JoinColumn(name = "author_id", nullable = false)
+	private User author;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
@@ -34,11 +35,11 @@ public class Post {
 	private LocalDateTime updatedAt;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	@OneToMany
+	@OneToMany(mappedBy = "post")
 	private List<Comment> commentList;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	@OneToMany(mappedBy = "postId")
+	@OneToMany(mappedBy = "post")
 	private List<Like> likesList;
 
 }
