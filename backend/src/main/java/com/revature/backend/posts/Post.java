@@ -3,6 +3,7 @@ package com.revature.backend.posts;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.revature.backend.comments.Comment;
 
 import com.revature.backend.likes.Like;
@@ -44,6 +45,7 @@ public class Post {
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@OneToMany(mappedBy = "post")
+	@JsonManagedReference
 	private List<Comment> commentList;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)

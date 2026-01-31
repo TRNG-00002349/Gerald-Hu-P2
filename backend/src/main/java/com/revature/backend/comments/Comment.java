@@ -1,5 +1,6 @@
 package com.revature.backend.comments;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.revature.backend.posts.Post;
 import com.revature.backend.users.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,17 +21,19 @@ public class Comment {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@NotNull
+	@NotBlank
 	private String content;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@ManyToOne
 	@JoinColumn(name = "author_id", nullable = false)
+	@JsonBackReference
 	private User author;
 
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "post_id", nullable = false)
+	@JsonBackReference
 	private Post post;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
