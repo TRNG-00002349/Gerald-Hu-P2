@@ -1,0 +1,45 @@
+package com.revature.backend.posts;
+
+import com.revature.backend.users.User;
+import com.revature.backend.users.UserRepository;
+import com.revature.backend.utils.UserNotFoundException;
+import jakarta.validation.Valid;
+import lombok.Data;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@Data
+public class PostService {
+
+	private final PostRepository postRepository;
+	private final UserRepository userRepository;
+
+	public Post createUserBlogPost(@Valid PostDto postDto) {
+		Integer authorId = postDto.getAuthorId();
+		Optional<User> author = userRepository.findByIdAndDeletedFalse(authorId);
+		if (author.isEmpty()) {
+			throw new UserNotFoundException(authorId);
+		}
+
+		Post post = new Post();
+		post.setContent(postDto.getContent());
+		post.setAuthor(author.get());
+		post.setCreatedAt(LocalDateTime.now());
+
+		return postRepository.save(post);
+	}
+
+	public List<Post> readUserBlogPosts(Integer userId) {
+		Optional<User> author = userRepository.findByIdAndDeletedFalse(userId);
+		if (author.isEmpty()) {
+			throw new UserNotFoundException(userId);
+		}
+		return postRepository.findByAuthorId(userId);
+	}
+}

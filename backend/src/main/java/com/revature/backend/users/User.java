@@ -3,6 +3,7 @@ package com.revature.backend.users;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.revature.backend.posts.Post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -54,6 +55,7 @@ public class User {
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@OneToMany(mappedBy = "author")
+	@JsonManagedReference
 	private List<Post> userPosts;
 
 

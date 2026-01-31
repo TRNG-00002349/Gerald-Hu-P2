@@ -51,4 +51,10 @@ class GlobalControllerExceptionHandler {
 		}
 		return new ErrorInfo(req.getRequestURL(), String.join(", ", violations), HttpStatus.BAD_REQUEST);
 	}
+
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(UserNotFoundException.class)
+	@ResponseBody ErrorInfo handleNotFoundException(HttpServletRequest req, Exception e) {
+		return new ErrorInfo(req.getRequestURL(), e.getMessage(), HttpStatus.NOT_FOUND);
+	}
 }
