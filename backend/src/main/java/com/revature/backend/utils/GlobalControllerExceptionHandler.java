@@ -5,10 +5,10 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,6 +37,17 @@ class GlobalControllerExceptionHandler {
 		List<String> violations = new ArrayList<>();
 		for (ConstraintViolation violation : e.getConstraintViolations()) {
 			violations.add(violation.getMessage());
+		}
+		return new ErrorInfo(req.getRequestURL(), String.join(", ", violations), HttpStatus.BAD_REQUEST);
+	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ResponseBody ErrorInfo handleMethodArgumentNotValidException(HttpServletRequest req, MethodArgumentNotValidException e) {
+		List<String> violations = new ArrayList<>();
+		for (ObjectError violation : e.getAllErrors()) {
+			String message = ((FieldError) violation).getField() + " " + violation.getDefaultMessage();
+			violations.add(message);
 		}
 		return new ErrorInfo(req.getRequestURL(), String.join(", ", violations), HttpStatus.BAD_REQUEST);
 	}
