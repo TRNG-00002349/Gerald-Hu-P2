@@ -5,6 +5,7 @@ import com.revature.backend.posts.PostRepository;
 import com.revature.backend.users.User;
 import com.revature.backend.users.UserRepository;
 import com.revature.backend.utils.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class CommentService {
 	private final PostRepository postRepository;
 	private final CommentRepository commentRepository;
 
-	public Comment createComment(CommentDto commentDto) {
+	public Comment createComment(@Valid CommentDto commentDto) {
 		// TODO: auth, author id, etc
 		Integer authorId = commentDto.getAuthorId();
 		Integer postId = commentDto.getPostId();
@@ -46,5 +47,26 @@ public class CommentService {
 			throw new EntityNotFoundException("comment", commentId);
 		}
 		return comment.get();
+	}
+
+	public Comment updateComment(Integer commentId, @Valid CommentDto commentDto) {
+		Optional<Comment> comment = commentRepository.findById(commentId);
+		if (comment.isEmpty()) {
+			throw new EntityNotFoundException("comment", commentId);
+		}
+
+		Comment c = comment.get();
+		c.setUpdatedAt(LocalDateTime.now());
+		c.setContent(commentDto.getContent());
+		return commentRepository.save(c);
+	}
+
+	public void deleteComment(Integer commentId) {
+		Optional<Comment> comment = commentRepository.findById(commentId);
+		if (comment.isEmpty()) {
+			throw new EntityNotFoundException("comment", commentId);
+		}
+
+		commentRepository.deleteById(commentId);
 	}
 }

@@ -25,12 +25,6 @@ public class PostController {
 		return postService.readBlogPostById(postId);
 	}
 
-	@GetMapping("/api/users/{userId}/posts")
-	@ResponseStatus(HttpStatus.OK)
-	public List<Post> getUserBlogPosts(@PathVariable Integer userId) {
-		return postService.readUserBlogPosts(userId);
-	}
-
 	@PutMapping("/api/posts/{postId}")
 	@ResponseStatus(HttpStatus.OK)
 	public Post putBlogPost(@PathVariable Integer postId, @Valid @RequestBody PostDto postDto) {

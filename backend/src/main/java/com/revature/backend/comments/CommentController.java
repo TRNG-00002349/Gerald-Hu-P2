@@ -6,11 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 @RestController
 @RequestMapping("/api/comments")
 @Data
@@ -30,13 +25,16 @@ public class CommentController {
 		return commentService.readCommentById(commentId);
 	}
 
-
-	public ResponseEntity<Comment> putComment() {
-		return ResponseEntity.ok(new Comment());
+	@PutMapping("/{commentId}")
+	@ResponseStatus(HttpStatus.OK)
+	public Comment putCommentById(@PathVariable Integer commentId, @Valid @RequestBody CommentDto commentDto) {
+		return commentService.updateComment(commentId, commentDto);
 	}
 
-	public ResponseEntity<Comment> deleteComment() {
-		return ResponseEntity.ok(new Comment());
+	@DeleteMapping("/{commentId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteCommentById(@PathVariable Integer commentId) {
+		commentService.deleteComment(commentId);
 	}
 
 
