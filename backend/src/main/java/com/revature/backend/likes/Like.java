@@ -1,8 +1,6 @@
 package com.revature.backend.likes;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.revature.backend.posts.Post;
 import com.revature.backend.users.User;
 import jakarta.persistence.*;
@@ -17,16 +15,19 @@ public class Like {
 
 	@Id
 	@GeneratedValue
+	@JsonIgnore
 	private Integer id;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	@JsonBackReference
+	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+	@JsonIdentityReference(alwaysAsId=true) // https://stackoverflow.com/a/17583175
 	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "post_id", nullable = false)
-	@JsonBackReference
+	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+	@JsonIdentityReference(alwaysAsId=true)
 	private Post post;
 
 }
