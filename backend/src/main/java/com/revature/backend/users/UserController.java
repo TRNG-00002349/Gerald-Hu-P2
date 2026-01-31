@@ -36,4 +36,10 @@ public class UserController {
 	public User putUserById(@PathVariable Integer id, @Valid @RequestBody UserDto user) {
 		return userService.updateUserById(id, user);
 	}
+
+	@DeleteMapping("/api/users/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteUserById(@PathVariable Integer id) {
+		userService.deleteUserById(id);
+	}
 }

@@ -48,14 +48,18 @@ public class UserService {
 		if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
 			user.setHashedPassword(userDto.getPassword()); // TODO: hash
 		}
-		if (userDto.getUsername() != null && !userDto.getUsername().isBlank()) {
-			user.setUsername(userDto.getUsername());
-		}
 		user.setUpdatedAt(LocalDateTime.now());
 		return userRepository.save(user);
 	}
 
 	public void deleteUserById(Integer id) {
-		// TODO
+		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
+		if (result.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		User user = result.get();
+		user.setDeleted(true);
+		user.setUpdatedAt(LocalDateTime.now());
+		userRepository.save(user);
 	}
 }
