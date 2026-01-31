@@ -1,6 +1,8 @@
 package com.revature.backend.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @ControllerAdvice
 class GlobalControllerExceptionHandler {
@@ -25,5 +29,15 @@ class GlobalControllerExceptionHandler {
 			message = "bad request";
 		}
 		return new ErrorInfo(req.getRequestURL(), message, HttpStatus.BAD_REQUEST);
+	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(ConstraintViolationException.class)
+	@ResponseBody ErrorInfo handleConstraintViolationException(HttpServletRequest req, ConstraintViolationException e) {
+		List<String> violations = new ArrayList<>();
+		for (ConstraintViolation violation : e.getConstraintViolations()) {
+			violations.add(violation.getMessage());
+		}
+		return new ErrorInfo(req.getRequestURL(), String.join(", ", violations), HttpStatus.BAD_REQUEST);
 	}
 }

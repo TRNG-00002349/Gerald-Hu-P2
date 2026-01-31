@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.revature.backend.posts.Post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class User {
 	private Integer id;
 
 	@Size(min = 4, message="username should be 4 characters or longer")
+	@Pattern(regexp = "^\\S*$", message="whitespace in username is not allowed")
 	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 
