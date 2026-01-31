@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Valid
-public class NewUserDto {
+public class UserDto {
 
 	@Size(min = 4, message="username should be 4 characters or longer")
 	@NotNull

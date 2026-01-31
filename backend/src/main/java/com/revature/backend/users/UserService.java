@@ -15,16 +15,10 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
-	public User createUser(NewUserDto newUserDto) {
-
+	public User createUser(UserDto userDto) {
 		// TODO: hash password before passing on
-		User user = new User();
-		user.setUsername(newUserDto.getUsername());
-		user.setEmail(newUserDto.getEmail());
-		user.setHashedPassword(newUserDto.getPassword());
+		User user = new User(userDto);
 		user.setCreatedAt(LocalDateTime.now());
-		user.setDeleted(false);
-
 		return userRepository.save(user);
 	}
 
@@ -34,11 +28,18 @@ public class UserService {
 
 	public User readUserById(Integer id) {
 		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
-		if (result.isPresent()) {
-			return result.get();
-		} else {
+		if (result.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
+		return result.get();
 	}
-
+//
+//	public User updateUserById(Integer id, UserDto userDto) {
+//		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
+//		if (result.isEmpty()) {
+//			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+//		}
+//
+//		return userRepository.save()
+//	}
 }

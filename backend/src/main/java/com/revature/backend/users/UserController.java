@@ -15,8 +15,8 @@ public class UserController {
 
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
-	public User postUser(@Valid @RequestBody NewUserDto user) {
-		return userService.createUser(user);
+	public User postUser(@Valid @RequestBody UserDto userDto) {
+		return userService.createUser(userDto);
 	}
 
 	@GetMapping("/api/users")
@@ -30,4 +30,10 @@ public class UserController {
 	public User getUserById(@PathVariable Integer id) {
 		return userService.readUserById(id);
 	}
+//
+//	@PutMapping("/api/users/{id}")
+//	@ResponseStatus(HttpStatus.OK)
+//	public User putUserById(@PathVariable Integer id, @Valid @RequestBody UserDto user) {
+//		return userService.updateUserById(id, user);
+//	}
 }
