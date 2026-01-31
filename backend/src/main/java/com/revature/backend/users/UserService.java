@@ -20,12 +20,7 @@ public class UserService {
 		User user = new User(userDto);
 		user.setDeleted(false);
 		user.setCreatedAt(LocalDateTime.now());
-		try {
-			return userRepository.save(user);
-		} catch (Exception e) {
-			// Polish: when failing to make user bc of unique constraints, inform the client
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-		}
+		return userRepository.save(user);
 	}
 
 	public List<User> readAllUsers() {
@@ -58,5 +53,9 @@ public class UserService {
 		}
 		user.setUpdatedAt(LocalDateTime.now());
 		return userRepository.save(user);
+	}
+
+	public void deleteUserById(Integer id) {
+		// TODO
 	}
 }
