@@ -18,8 +18,9 @@ public class LikeController {
 		return likeService.createLike(postId);
 	}
 
-
-	public Like deletLike() {
-		return new Like();
+	@DeleteMapping
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteLike(@PathVariable Integer postId) {
+		likeService.deleteLike(postId);
 	}
 }

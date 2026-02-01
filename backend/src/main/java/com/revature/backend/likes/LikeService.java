@@ -5,6 +5,7 @@ import com.revature.backend.posts.PostRepository;
 import com.revature.backend.users.User;
 import com.revature.backend.users.UserRepository;
 import com.revature.backend.utils.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,16 @@ public class LikeService {
 		like.setPost(post.get());
 		like.setUser(user.get());
 		return likeRepository.save(like);
+	}
+
+	@Transactional
+	public void deleteLike(Integer postId) {
+		Optional<User> user = userRepository.findByIdAndDeletedFalse(1);
+		Optional<Post> post = postRepository.findById(postId);
+		if (post.isEmpty()) {
+			throw new EntityNotFoundException("post", postId);
+		}
+
+		likeRepository.deleteByUserIdAndPostId(1, postId);
 	}
 }
