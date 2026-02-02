@@ -1,5 +1,6 @@
 package com.revature.backend.utils;
 
+import com.revature.backend.auth.InvalidCredentialsException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -56,5 +57,11 @@ class GlobalControllerExceptionHandler {
 	@ExceptionHandler(EntityNotFoundException.class)
 	@ResponseBody ErrorInfo handleEntityNotFoundException(HttpServletRequest req, Exception e) {
 		return new ErrorInfo(req.getRequestURL(), e.getMessage(), HttpStatus.NOT_FOUND);
+	}
+
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ExceptionHandler(InvalidCredentialsException.class)
+	@ResponseBody ErrorInfo handleInvalidCredentialsException(HttpServletRequest req, InvalidCredentialsException e) {
+		return new ErrorInfo(req.getRequestURL(), e.getMessage(), HttpStatus.UNAUTHORIZED);
 	}
 }
