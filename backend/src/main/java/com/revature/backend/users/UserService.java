@@ -1,5 +1,9 @@
 package com.revature.backend.users;
 
+import com.revature.backend.auth.AuthDto;
+import com.revature.backend.auth.InvalidCredentialsException;
+import com.revature.backend.utils.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.Data;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.HttpStatus;
@@ -20,9 +24,23 @@ public class UserService {
 		User user = new User(userDto);
 		user.setDeleted(false);
 		user.setCreatedAt(LocalDateTime.now());
-		String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(16));
+		String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(8));
 		user.setHashedPassword(hashedPassword);
 		return userRepository.save(user);
+	}
+
+	public User login(@Valid AuthDto authDto) {
+		String username = authDto.getUsername();
+		Optional<User> optionalUser = userRepository.findByUsernameAndDeletedFalse(username);
+		if (optionalUser.isEmpty()) {
+			throw new EntityNotFoundException("user", username);
+		}
+		User user = optionalUser.get();
+		if (BCrypt.checkpw(authDto.getPassword(), user.getHashedPassword())) {
+			return user;
+		} else {
+			throw new InvalidCredentialsException("invalid username or password");
+		}
 	}
 
 	public List<User> readAllUsers() {

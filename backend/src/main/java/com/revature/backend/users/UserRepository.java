@@ -1,5 +1,6 @@
 package com.revature.backend.users;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,8 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 	List<User> findAllByDeletedFalse();
 
 	Optional<User> findByIdAndDeletedFalse(Integer id);
+
+	Optional<User> findByUsernameAndDeletedFalse(@NotBlank String username);
 
 	// List<User> findByUsername(@Param("username") String name);
 }
