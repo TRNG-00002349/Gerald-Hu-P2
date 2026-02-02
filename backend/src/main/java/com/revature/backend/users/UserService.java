@@ -1,6 +1,7 @@
 package com.revature.backend.users;
 
 import lombok.Data;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,10 +17,11 @@ public class UserService {
 	private final UserRepository userRepository;
 
 	public User createUser(UserDto userDto) {
-		// TODO: hash password before passing on
 		User user = new User(userDto);
 		user.setDeleted(false);
 		user.setCreatedAt(LocalDateTime.now());
+		String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(16));
+		user.setHashedPassword(hashedPassword);
 		return userRepository.save(user);
 	}
 

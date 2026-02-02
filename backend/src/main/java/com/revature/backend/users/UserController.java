@@ -9,37 +9,32 @@ import java.util.List;
 
 @RestController
 @Data
+@RequestMapping("/api/users")
 public class UserController {
 
 	private final UserService userService;
 
-	@PostMapping("/register")
-	@ResponseStatus(HttpStatus.CREATED)
-	public User postUser(@Valid @RequestBody UserDto userDto) {
-		return userService.createUser(userDto);
-	}
-
-	@GetMapping("/api/users")
+	@GetMapping()
 	@ResponseStatus(HttpStatus.OK)
 	public List<User> getAllUsers() {
 		return userService.readAllUsers();
 	}
 
-	@GetMapping("/api/users/{id}")
+	@GetMapping("/{userId}")
 	@ResponseStatus(HttpStatus.OK)
-	public User getUserById(@PathVariable Integer id) {
-		return userService.readUserById(id);
+	public User getUserById(@PathVariable Integer userId) {
+		return userService.readUserById(userId);
 	}
 
-	@PutMapping("/api/users/{id}")
+	@PutMapping("/{userId}")
 	@ResponseStatus(HttpStatus.OK)
-	public User putUserById(@PathVariable Integer id, @Valid @RequestBody UserDto user) {
-		return userService.updateUserById(id, user);
+	public User putUserById(@PathVariable Integer userId, @Valid @RequestBody UserDto user) {
+		return userService.updateUserById(userId, user);
 	}
 
-	@DeleteMapping("/api/users/{id}")
+	@DeleteMapping("/{userId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteUserById(@PathVariable Integer id) {
-		userService.deleteUserById(id);
+	public void deleteUserById(@PathVariable Integer userId) {
+		userService.deleteUserById(userId);
 	}
 }
