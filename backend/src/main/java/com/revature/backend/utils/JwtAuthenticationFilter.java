@@ -10,7 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +24,7 @@ import org.springframework.web.util.WebUtils;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
@@ -46,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected boolean shouldNotFilter(HttpServletRequest request) {
 		String path = request.getRequestURI();
 		//System.out.println("ShouldFilter " + path + "? " + !unsecurePaths.contains(path));
-		return unsecuredPaths.contains(path);
+		return unsecuredPaths.contains(path) || request.getMethod().equals(HttpMethod.GET.toString());
 	}
 
 	@Override
@@ -56,7 +60,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		Claims claims = extractToken(request);
 		if (claims == null || !validToken(claims)) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			response.getWriter().write("invalid token");
+			response.getWriter().write(
+					String.format(
+							"{\"status\": 403, \"path\": \"%s\", \"error\": \"invalid token\", \"timestamp\": \"%s\"}",
+							request.getRequestURL(),
+							LocalDateTime.now()
+					));
 			return;
 		}
 
