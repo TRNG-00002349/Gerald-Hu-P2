@@ -3,12 +3,12 @@ package com.revature.backend.users;
 import com.revature.backend.auth.AuthDto;
 import com.revature.backend.auth.InvalidCredentialsException;
 import com.revature.backend.utils.EntityNotFoundException;
+import com.revature.backend.utils.IAuthenticationFacade;
 import jakarta.validation.Valid;
 import lombok.Data;
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +19,35 @@ import java.util.Optional;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final IAuthenticationFacade authenticationFacade;
+
+	private void checkUserOwnership(Integer pathId) {
+		/**
+		 * Check if the logged-in user can modify the user specified by the URL path.
+		 * TODO: add role-based check; if logged-in as admin, should be able to bypass ownership check.
+		 */
+		/* POLISH: There's probably a better way to check user ownership, e.g. using filters or intercepts.
+		However, considering "user owns entity" is business logic, perhaps it *should* live in a service.
+		 */
+		Authentication authentication = authenticationFacade.getAuthentication();
+		Optional<String> principal = Optional.ofNullable((String) authentication.getPrincipal());
+		if (principal.isEmpty()) {
+			throw new InvalidCredentialsException("auth cookie doesn't contain a user");
+		}
+
+		Integer claimedUserId = Integer.valueOf(principal.get());
+		Optional<User> claimedUser = userRepository.findByIdAndDeletedFalse(claimedUserId);
+		if (claimedUser.isEmpty()) {
+			throw new InvalidCredentialsException(
+					String.format(
+							"Current user %s is deleted",
+							claimedUserId));
+		}
+
+		if (!pathId.equals(claimedUserId)) {
+			throw new InvalidCredentialsException(claimedUserId, "user", pathId);
+		}
+	}
 
 	public User createUser(UserDto userDto) {
 		User user = new User(userDto);
@@ -56,6 +85,8 @@ public class UserService {
 	}
 
 	public User updateUserById(Integer id, UserDto userDto) {
+		checkUserOwnership(id);
+
 		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
 		if (result.isEmpty()) {
 			throw new EntityNotFoundException("user", id);
@@ -69,11 +100,16 @@ public class UserService {
 			String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(8));
 			user.setHashedPassword(hashedPassword);
 		}
+		if (userDto.getUsername() != null && !userDto.getUsername().isBlank()) {
+			user.setUsername(userDto.getUsername());
+		}
 		user.setUpdatedAt(LocalDateTime.now());
 		return userRepository.save(user);
 	}
 
 	public void deleteUserById(Integer id) {
+		checkUserOwnership(id);
+
 		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
 		if (result.isEmpty()) {
 			throw new EntityNotFoundException("user", id);

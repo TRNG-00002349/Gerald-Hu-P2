@@ -48,6 +48,7 @@ public class AuthController {
 		String jwt = Jwts.builder()
 				.subject("Authorization JWT")
 				.claim("username", user.getUsername())
+				.claim("userId", user.getId().toString())
 				.claim("role", "USER")
 				.issuedAt(Date.from(Instant.now()))
 				.expiration(Date.from(LocalDateTime.now().plusDays(3).atZone(ZoneId.systemDefault()).toInstant()))

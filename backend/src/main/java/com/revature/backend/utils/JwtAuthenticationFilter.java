@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -70,8 +71,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 
 		String username = (String) claims.get("username");
+		String userId = (String) claims.get("userId");
 		Authentication auth = new UsernamePasswordAuthenticationToken(
-				username,
+				userId,
 				null,
 				List.of(new SimpleGrantedAuthority("USER")));
 		SecurityContextHolder.getContext().setAuthentication(auth);

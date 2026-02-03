@@ -30,7 +30,6 @@ public class SecurityConfig {
 				.authorizeHttpRequests((auth) -> auth
 						//These next two items set paths to be permitted through spring security.
 						//This doesn't allow it through our custom JWT filter, we need to also handle these paths there.
-						.requestMatchers("/ping").permitAll()
 						.requestMatchers("/register").permitAll()
 						.requestMatchers("/login").permitAll()
 						.requestMatchers(HttpMethod.GET).permitAll()
