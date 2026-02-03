@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
+@RestControllerAdvice
 class GlobalControllerExceptionHandler {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

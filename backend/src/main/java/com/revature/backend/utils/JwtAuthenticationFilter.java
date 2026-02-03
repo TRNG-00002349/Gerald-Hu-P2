@@ -54,9 +54,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 																	FilterChain chain) throws ServletException, IOException {
 
 		Claims claims = extractToken(request);
-
-		if (claims.isEmpty() || !validToken(claims)) {
+		if (claims == null || !validToken(claims)) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.getWriter().write("invalid token");
 			return;
 		}
 
@@ -69,13 +69,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		chain.doFilter(request, response);
 	}
 
-	private Claims extractToken(HttpServletRequest request) {
+	private Claims extractToken(HttpServletRequest request) throws IOException {
 		Cookie authCookie = WebUtils.getCookie(request, "Authentication");
-		return Jwts.parser()
-				.verifyWith(secretKey)
-				.build()
-				.parseSignedClaims(authCookie.getValue())
-				.getPayload();
+		try {
+			return Jwts.parser()
+					.verifyWith(secretKey)
+					.build()
+					.parseSignedClaims(authCookie.getValue())
+					.getPayload();
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 
 	private boolean validToken(Claims claims) {
