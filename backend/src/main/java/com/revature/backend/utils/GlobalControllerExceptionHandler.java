@@ -1,6 +1,7 @@
 package com.revature.backend.utils;
 
 import com.revature.backend.auth.InvalidCredentialsException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -63,5 +64,10 @@ class GlobalControllerExceptionHandler {
 	@ExceptionHandler(InvalidCredentialsException.class)
 	@ResponseBody ErrorInfo handleInvalidCredentialsException(HttpServletRequest req, InvalidCredentialsException e) {
 		return new ErrorInfo(req.getRequestURL(), e.getMessage(), HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(UnsupportedJwtException.class)
+	@ResponseBody ErrorInfo handleUnsupportedJwtException(HttpServletRequest req) {
+		return new ErrorInfo(req.getRequestURL(), "invalid jwt", HttpStatus.BAD_REQUEST);
 	}
 }
