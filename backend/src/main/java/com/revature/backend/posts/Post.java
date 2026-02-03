@@ -47,6 +47,7 @@ public class Post {
 	@OneToMany(mappedBy = "post")
 	@JsonManagedReference
 	private List<Comment> commentList;
+	// TODO: deleting a post should also delete all its comments/cascade things
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@OneToMany(mappedBy = "post")

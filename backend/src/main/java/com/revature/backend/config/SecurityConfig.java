@@ -1,5 +1,7 @@
-package com.revature.backend.utils;
+package com.revature.backend.config;
 
+import com.revature.backend.utils.CorsFilter;
+import com.revature.backend.utils.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -37,8 +38,8 @@ public class SecurityConfig {
 						// .requestMatchers("/api/admin/**").hasRole("ADMIN")
 						.anyRequest().authenticated()
 				)
-//				.addFilterBefore(corsFilter, CorsFilter.class)
-				.addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
 
 
 		return http.build();
