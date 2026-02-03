@@ -50,7 +50,7 @@ public class UserService {
 	public User readUserById(Integer id) {
 		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
 		if (result.isEmpty()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			throw new EntityNotFoundException("user", id);
 		}
 		return result.get();
 	}
@@ -58,7 +58,7 @@ public class UserService {
 	public User updateUserById(Integer id, UserDto userDto) {
 		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
 		if (result.isEmpty()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			throw new EntityNotFoundException("user", id);
 		}
 		User user = result.get();
 		// Polish: there has to be a better way to do this...
@@ -66,7 +66,8 @@ public class UserService {
 			user.setEmail(userDto.getEmail());
 		}
 		if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
-			user.setHashedPassword(userDto.getPassword()); // TODO: hash
+			String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(8));
+			user.setHashedPassword(hashedPassword);
 		}
 		user.setUpdatedAt(LocalDateTime.now());
 		return userRepository.save(user);
@@ -75,7 +76,7 @@ public class UserService {
 	public void deleteUserById(Integer id) {
 		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
 		if (result.isEmpty()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			throw new EntityNotFoundException("user", id);
 		}
 		User user = result.get();
 		user.setDeleted(true);
