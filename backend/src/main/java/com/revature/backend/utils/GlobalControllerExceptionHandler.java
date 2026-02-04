@@ -27,7 +27,13 @@ class GlobalControllerExceptionHandler {
 		if (e.getSQLState().equals("23502")) {
 			message = "null or missing values in data";
 		} else if (e.getSQLState().equals("23505")) {
-			message = "duplicate data in database";
+			if (req.getRequestURL().toString().contains("like")) {
+				message = "you've already liked this post";
+			} else if (req.getRequestURL().toString().contains("register")) {
+				message = "that username or email is already taken";
+			} else {
+				message = "duplicate data in database (you shouldn't see this)";
+			}
 		} else {
 			message = "bad request";
 		}
