@@ -1,9 +1,7 @@
-package com.revature.backend.utils;
+package com.revature.backend.auth;
 
 import java.io.IOException;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 

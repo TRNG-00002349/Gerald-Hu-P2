@@ -1,7 +1,7 @@
 package com.revature.backend.config;
 
-import com.revature.backend.utils.CorsFilter;
-import com.revature.backend.utils.JwtAuthenticationFilter;
+import com.revature.backend.auth.CorsFilter;
+import com.revature.backend.auth.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
