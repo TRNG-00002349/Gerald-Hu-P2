@@ -33,7 +33,7 @@ public class PostService {
 		if (claimedUser.isEmpty()) {
 			throw new InvalidCredentialsException(
 					String.format(
-							"Current user %s is deleted",
+							"Current user %s not found",
 							claimedUserId));
 		}
 
