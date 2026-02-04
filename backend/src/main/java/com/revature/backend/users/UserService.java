@@ -29,13 +29,9 @@ public class UserService {
 		/* POLISH: There's probably a better way to check user ownership, e.g. using filters or intercepts.
 		However, considering "user owns entity" is business logic, perhaps it *should* live in a service.
 		 */
-		Authentication authentication = authenticationFacade.getAuthentication();
-		Optional<String> principal = Optional.ofNullable((String) authentication.getPrincipal());
-		if (principal.isEmpty()) {
-			throw new InvalidCredentialsException("auth cookie doesn't contain a user");
-		}
 
-		Integer claimedUserId = Integer.valueOf(principal.get());
+		Integer claimedUserId = authenticationFacade.getClaimedUserId();
+
 		Optional<User> claimedUser = userRepository.findByIdAndDeletedFalse(claimedUserId);
 		if (claimedUser.isEmpty()) {
 			throw new InvalidCredentialsException(

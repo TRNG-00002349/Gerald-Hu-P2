@@ -18,6 +18,14 @@ public class PostService {
 	private final PostRepository postRepository;
 	private final UserRepository userRepository;
 
+	private void checkPostOwnership(Integer pathId) {
+		/*
+		 * Check if the logged-in user can modify the blog post specified by the URL path.
+		 * TODO: add role-based check; if logged-in as admin, should be able to bypass ownership check.
+		 */
+
+	}
+
 	public Post createBlogPost(@Valid PostDto postDto) {
 		// TODO: authorId shouldn't be part of the postDto, it should be obtained from user token/cookie.
 		Integer authorId = postDto.getAuthorId();
