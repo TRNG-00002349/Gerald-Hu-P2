@@ -38,7 +38,7 @@ export class Register {
       },
       error: (err: HttpErrorResponse) => {
         console.log(err)
-        this.registrationResult.set(err.error.error)
+        this.registrationResult.set(err?.error?.error)
         this.registrationState.set(RegistrationState.FAILURE)
       }
     })
