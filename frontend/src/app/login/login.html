@@ -1,1 +1,37 @@
-<p>login works!</p>
+<h2>login</h2>
+<label for="username">Username: </label>
+<input 
+  type="text" 
+  id="username"
+  class="form-control"
+  required
+  [(ngModel)]="this.username"
+  #username="ngModel"
+/>
+<br>
+<label for="password">Password: </label>
+<input 
+  type="text"
+  id="password" 
+  class="form-control"
+  required
+  [(ngModel)]="this.password"
+  #password="ngModel"
+/>
+<br>
+<button 
+  (click)="submitLoginForm()"
+  class="form-control"
+  [disabled]="username.invalid || password.invalid"
+>Login</button>
+@if(username.invalid || password.invalid) {
+  <div class="alert">One or more fields is invalid:</div>
+    @if (username.hasError('required')) {
+    <div class="alert">username is required</div>
+  }
+  @if (password.hasError('required')) {
+    <div class="alert">password is required</div>
+  }
+}
+
+<div>{{loginResult()}}</div>

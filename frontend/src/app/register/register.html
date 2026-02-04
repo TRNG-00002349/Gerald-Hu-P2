@@ -68,13 +68,7 @@
   [disabled]="username.invalid || email.invalid || password.invalid"
 >Register</button>
 @if(username.invalid || email.invalid || password.invalid) {
-  <div class="alert">button disabled, see above for details</div>
+  <div class="alert">One or more fields is invalid, see above</div>
 }
 
-<div>{{registrationState()}}</div>
-@if(registrationState() === "SUCCESS") {
-  <div>{{registrationResult()}}</div>
-}
-@if(registrationState() === "FAILURE") {
-  <div>{{registrationResult()}}</div>
-}
+<div>{{registrationResult()}}</div>
