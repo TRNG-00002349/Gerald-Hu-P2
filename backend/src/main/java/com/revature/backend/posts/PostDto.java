@@ -6,8 +6,6 @@ import lombok.Data;
 @Data
 public class PostDto {
 
-	private Integer authorId;
-
 	@NotBlank
 	private String content;
 }

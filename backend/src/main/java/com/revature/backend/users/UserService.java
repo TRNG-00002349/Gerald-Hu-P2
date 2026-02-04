@@ -21,8 +21,8 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final IAuthenticationFacade authenticationFacade;
 
-	private void checkUserOwnership(Integer pathId) {
-		/**
+	private void checkUserOwnership(User user) {
+		/*
 		 * Check if the logged-in user can modify the user specified by the URL path.
 		 * TODO: add role-based check; if logged-in as admin, should be able to bypass ownership check.
 		 */
@@ -40,8 +40,8 @@ public class UserService {
 							claimedUserId));
 		}
 
-		if (!pathId.equals(claimedUserId)) {
-			throw new InvalidCredentialsException(claimedUserId, "user", pathId);
+		if (!claimedUserId.equals(user.getId())) {
+			throw new InvalidCredentialsException(claimedUserId, "user", user.getId());
 		}
 	}
 
@@ -81,13 +81,14 @@ public class UserService {
 	}
 
 	public User updateUserById(Integer id, UserDto userDto) {
-		checkUserOwnership(id);
-
 		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
 		if (result.isEmpty()) {
 			throw new EntityNotFoundException("user", id);
 		}
+
 		User user = result.get();
+		checkUserOwnership(user);
+
 		// Polish: there has to be a better way to do this...
 		if (userDto.getEmail() != null && !userDto.getEmail().isBlank()) {
 			user.setEmail(userDto.getEmail());
@@ -104,13 +105,14 @@ public class UserService {
 	}
 
 	public void deleteUserById(Integer id) {
-		checkUserOwnership(id);
-
 		Optional<User> result = userRepository.findByIdAndDeletedFalse(id);
 		if (result.isEmpty()) {
 			throw new EntityNotFoundException("user", id);
 		}
+
 		User user = result.get();
+		checkUserOwnership(user);
+
 		user.setDeleted(true);
 		user.setUpdatedAt(LocalDateTime.now());
 		userRepository.save(user);
