@@ -3,6 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from './user';
 
+export type ApiResponse = {
+  createdAt?: Date,
+  updatedAt?: Date,
+  id: number
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -14,14 +20,13 @@ export class ApiClient {
     this.httpClient = httpClient
   }
 
-  // TODO: investigate why Observable<User> lacks HttpResponse wrapping
-  register(username: string, password: string, email: string): Observable<User> {
+  register(username: string, password: string, email: string): Observable<ApiResponse> {
     let user: User = {username: username, password: password, email: email}
-    return this.httpClient.post<User>(this.baseUrl+"/register", {observe: 'response'})
+    return this.httpClient.post<ApiResponse>(this.baseUrl+"/register", user)
   }
 
-  login(username: string, password: string): Observable<HttpResponse<String>> {
+  login(username: string, password: string): Observable<ApiResponse> {
     let user: User = {username: username, password: password}
-    return this.httpClient.post<String>(this.baseUrl + "/login", user, {observe: 'response'})
+    return this.httpClient.post<ApiResponse>(this.baseUrl + "/login", user)
   }
 }

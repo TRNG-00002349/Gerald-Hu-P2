@@ -70,3 +70,11 @@
 @if(username.invalid || email.invalid || password.invalid) {
   <div class="alert">button disabled, see above for details</div>
 }
+
+<div>{{registrationState()}}</div>
+@if(registrationState() === "SUCCESS") {
+  <div>{{registrationResult()}}</div>
+}
+@if(registrationState() === "FAILURE") {
+  <div>{{registrationResult()}}</div>
+}
