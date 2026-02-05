@@ -13,7 +13,8 @@ export type ApiResponse = {
   providedIn: 'root',
 })
 export class ApiClient {
-  baseUrl: string = "" //baseURL is blank for now thanks to the proxy to make http work. We'll have to do something with this later.
+  baseUrl: string = "" //baseURL is blank thanks to the proxy to make http work
+  apiBaseUrl: string = "/api"
   httpClient: HttpClient
 
   constructor(httpClient: HttpClient) {
@@ -28,5 +29,9 @@ export class ApiClient {
   login(username: string, password: string): Observable<ApiResponse> {
     let user: User = {username: username, password: password}
     return this.httpClient.post<ApiResponse>(this.baseUrl + "/login", user)
+  }
+
+  getUser(userId: number): Observable<User> {
+    return this.httpClient.get<User>(this.apiBaseUrl + `/users/${userId}`)
   }
 }

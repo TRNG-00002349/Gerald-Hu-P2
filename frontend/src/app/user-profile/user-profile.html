@@ -1,1 +1,11 @@
-<p>user-profile works!</p>
+@if(err()) {
+  @if(errStatus() === 404) {
+    <p>user not found: {{userId()}}</p>
+  }
+}
+@else {
+  <p>username: {{user().username}}</p>
+  @if(loggedInUser() === userId()) {
+    <p>(that's you!)</p>
+  }
+}
