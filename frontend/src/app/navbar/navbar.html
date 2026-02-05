@@ -1,1 +1,6 @@
-<a routerLink="">home</a> | <a routerLink="register-login">register or log in</a>
+<a routerLink="">home</a> | <a routerLink="register-login">register or log in</a> | 
+
+<!-- TODO: check the cookie to populate this, etc-->
+@if(userProfileLink()) { 
+  <a [routerLink]="userProfileLink()">your account</a>
+}
