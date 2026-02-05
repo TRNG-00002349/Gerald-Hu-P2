@@ -1,4 +1,4 @@
-<h2>Register</h2>
+<h2>register</h2>
 <label for="username">Username: </label>
 <input 
   type="text" 
@@ -10,19 +10,6 @@
   [(ngModel)]="this.username"
   #username="ngModel"
 />
-@if (username.invalid) {
-  <div class="alert">
-    @if (username.hasError('required')) {
-      <div>username is required</div>
-    } 
-    @if (username.hasError('minlength')) {
-      <div>username must be at least 4 characters long</div>
-    }
-    @if (username.hasError('pattern')) {
-      <div>username must not have whitespace</div>
-    }
-  </div>
-}
 <br>
 <label for="password">Password: </label>
 <input 
@@ -33,13 +20,6 @@
   [(ngModel)]="this.password"
   #password="ngModel"
 />
-@if (password.invalid) {
-  <div class="alert">
-    @if (password.hasError('required')) {
-      <div>password is required</div>
-    }
-  </div>
-}
 <br>
 <label for="email">Email: </label>
 <input 
@@ -51,8 +31,28 @@
   [(ngModel)]="this.email"
   #email="ngModel"
 />
-@if (email.invalid) {
+<br>
+<button 
+  (click)="submitRegistrationForm()"
+  class="form-control"
+  [disabled]="username.invalid || email.invalid || password.invalid"
+>Register</button>
+
+@if(username.invalid || email.invalid || password.invalid) {
   <div class="alert">
+    One or more fields is invalid, see above
+    @if (username.hasError('required')) {
+      <div>username is required</div>
+    } 
+    @if (username.hasError('minlength')) {
+      <div>username must be at least 4 characters long</div>
+    }
+    @if (username.hasError('pattern')) {
+      <div>username must not have whitespace</div>
+    }
+    @if (password.hasError('required')) {
+      <div>password is required</div>
+    }
     @if (email.hasError('required')) {
       <div>email is required</div>
     }
@@ -60,15 +60,6 @@
       <div>email has invalid format</div>
     }
   </div>
-}
-<br>
-<button 
-  (click)="submitRegistrationForm()"
-  class="form-control"
-  [disabled]="username.invalid || email.invalid || password.invalid"
->Register</button>
-@if(username.invalid || email.invalid || password.invalid) {
-  <div class="alert">One or more fields is invalid, see above</div>
 }
 
 <div>{{registrationResult()}}</div>
