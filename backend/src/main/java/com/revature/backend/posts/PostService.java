@@ -73,6 +73,10 @@ public class PostService {
 		return post.get();
 	}
 
+	public List<Post> readBlogPosts() {
+		return (List<Post>) postRepository.findAll();
+	}
+
 	public Post updateBlogPost(Integer postId, @Valid PostDto postDto) {
 		Optional<Post> post = postRepository.findById(postId);
 		if (post.isEmpty()) {
