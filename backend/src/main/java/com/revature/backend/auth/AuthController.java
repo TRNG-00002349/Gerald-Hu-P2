@@ -42,7 +42,7 @@ public class AuthController {
 
 	@PostMapping("/login")
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public String loginUser(@Valid @RequestBody AuthDto authDto, HttpServletResponse response) {
+	public User loginUser(@Valid @RequestBody AuthDto authDto, HttpServletResponse response) {
 		User user = this.userService.login(authDto);
 
 		String jwt = Jwts.builder()
@@ -60,7 +60,7 @@ public class AuthController {
 		cookie.setHttpOnly(true);
 
 		response.addCookie(cookie);
-		return "{\"status\": 200, \"authenticated\": true}";
+		return user;
 	}
 
 }
